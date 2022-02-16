@@ -1,0 +1,14 @@
+{
+  "debug": true,
+  "server": {
+    "address": ":9090"
+  },
+  "database": {
+      "host": "localhost",
+      "port": "5432",
+      "user": "admin",
+      "pass": "supersecret123",
+      "name": "test"
+  }
+
+}

@@ -1,0 +1,136 @@
+definitions:
+  entities.Order:
+    properties:
+      id:
+        type: string
+      name:
+        example: Jimmy
+        type: string
+      orderItems:
+        items:
+          $ref: '#/definitions/entities.OrderItem'
+        type: array
+    required:
+    - name
+    - orderItems
+    type: object
+  entities.OrderItem:
+    properties:
+      pizzaName:
+        example: Meatfeast
+        type: string
+      size:
+        enum:
+        - Large
+        - Medium
+        - Small
+        example: Large
+        type: string
+    required:
+    - pizzaName
+    - size
+    type: object
+  entities.Pizza:
+    properties:
+      id:
+        type: string
+      ingredients:
+        example:
+        - Meat
+        - Cheese
+        - Sauce
+        items:
+          type: string
+        type: array
+      name:
+        example: Meatfeast
+        type: string
+      price:
+        example: 14.5
+        type: number
+    type: object
+  errors.ValidationError:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a sample server golang pizza order service
+  termsOfService: http://swagger.io/terms/
+  title: Pizza Code Sample
+  version: "1.0"
+paths:
+  /api/orders:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ValidationError'
+        "500":
+          description: ""
+      summary: Creates an order
+      tags:
+      - ""
+  /api/orders/{orderID}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Order ID
+        in: path
+        name: orderID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.ValidationError'
+        "500":
+          description: ""
+      summary: Get order by ID
+      tags:
+      - ""
+  /api/pizzas:
+    get:
+      consumes:
+      - application/json
+      description: Fetches the list of pizzas that can be ordered
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Pizza'
+            type: array
+        "500":
+          description: ""
+      summary: Get list of pizzas
+      tags:
+      - ""
+swagger: "2.0"
